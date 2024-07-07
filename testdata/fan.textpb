@@ -1,0 +1,32 @@
+update: <
+  timestamp: 1720382350000000000
+  update: <
+    path: <
+      elem: <
+        name: "openconfig-platform:components"
+      >
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "FAN-1-33"
+        >
+      >
+      elem: <
+        name: "fan"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"speed\":4500}"
+    >
+  >
+>
+extension: <
+  registered_ext: <
+    id: 103
+    msg: "10.99.99.31"
+  >
+>

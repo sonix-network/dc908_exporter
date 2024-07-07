@@ -1,0 +1,44 @@
+update: <
+  timestamp: 1720382348000000000
+  prefix: <
+    elem: <
+      name: "openconfig-platform:components"
+    >
+    elem: <
+      name: "component"
+      key: <
+        key: "name"
+        value: "PSU-1-22"
+      >
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "power-supply"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-current\":\"PuyLRA==\",\"input-voltage\":\"Q2UAAA==\",\"output-current\":\"P8PXCg==\",\"output-power\":\"QqQAAA==\",\"output-voltage\":\"QlQAAA==\"}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"temperature\":{\"instant\":30,\"interval\":\"900000000000\",\"max\":31,\"min\":30}}"
+    >
+  >
+>
+extension: <
+  registered_ext: <
+    id: 103
+    msg: "10.99.99.32"
+  >
+>

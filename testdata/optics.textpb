@@ -1,0 +1,773 @@
+update: <
+  timestamp: 1720382346000000000
+  prefix: <
+    elem: <
+      name: "openconfig-platform:components"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C1"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "1"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-0.5,\"interval\":\"900000000000\",\"max\":-0.4,\"min\":-0.6},\"laser-bias-current\":{\"instant\":55.5,\"interval\":\"900000000000\",\"max\":55.5,\"min\":55},\"output-power\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0.2,\"min\":-0.1}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C1"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "2"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-0.1,\"interval\":\"900000000000\",\"max\":0,\"min\":-0.2},\"laser-bias-current\":{\"instant\":55,\"interval\":\"900000000000\",\"max\":55.5,\"min\":55},\"output-power\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0.2,\"min\":-0.1}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C1"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "3"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-0.3,\"interval\":\"900000000000\",\"max\":-0.2,\"min\":-0.4},\"laser-bias-current\":{\"instant\":55,\"interval\":\"900000000000\",\"max\":55.5,\"min\":55},\"output-power\":{\"instant\":0.4,\"interval\":\"900000000000\",\"max\":0.6,\"min\":0.4}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C1"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "4"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-0.6,\"interval\":\"900000000000\",\"max\":-0.5,\"min\":-0.7},\"laser-bias-current\":{\"instant\":55.5,\"interval\":\"900000000000\",\"max\":55.5,\"min\":55},\"output-power\":{\"instant\":0.5,\"interval\":\"900000000000\",\"max\":0.7,\"min\":0.4}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C2"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "1"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C2"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "2"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C2"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "3"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C2"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "4"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C3"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "1"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C3"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "2"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C3"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "3"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C3"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "4"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C4"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "1"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C4"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "2"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C4"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "3"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C4"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "physical-channels"
+      >
+      elem: <
+        name: "channel"
+        key: <
+          key: "index"
+          value: "4"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"laser-bias-current\":{\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "OCH-1-1-L1"
+        >
+      >
+      elem: <
+        name: "openconfig-terminal-device:optical-channel"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"chromatic-dispersion\":{\"instant\":3,\"interval\":\"900000000000\",\"max\":4,\"min\":1},\"input-power\":{\"instant\":-14.3,\"interval\":\"900000000000\",\"max\":-14.3,\"min\":-14.3},\"laser-bias-current\":{\"instant\":188.7,\"interval\":\"900000000000\",\"max\":188.9,\"min\":188.6},\"output-power\":{\"instant\":0.5,\"interval\":\"900000000000\",\"max\":0.5,\"min\":0.5},\"polarization-dependent-loss\":{\"avg\":1.9,\"instant\":1.9,\"interval\":\"900000000000\",\"max\":2.6,\"min\":1.4},\"polarization-mode-dispersion\":{\"avg\":1.4,\"instant\":1.6,\"interval\":\"900000000000\",\"max\":1.6,\"min\":1.3},\"laser-freq-offset\":\"880\"}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "OCH-1-1-L2"
+        >
+      >
+      elem: <
+        name: "openconfig-terminal-device:optical-channel"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"chromatic-dispersion\":{\"instant\":-2,\"interval\":\"900000000000\",\"max\":0,\"min\":-6},\"input-power\":{\"instant\":-14.5,\"interval\":\"900000000000\",\"max\":-14.5,\"min\":-14.6},\"laser-bias-current\":{\"instant\":226.3,\"interval\":\"900000000000\",\"max\":226.4,\"min\":226.1},\"output-power\":{\"instant\":0.5,\"interval\":\"900000000000\",\"max\":0.5,\"min\":0.5},\"polarization-dependent-loss\":{\"avg\":1.8,\"instant\":1.8,\"interval\":\"900000000000\",\"max\":2.2,\"min\":1.6},\"polarization-mode-dispersion\":{\"avg\":0.6,\"instant\":0.6,\"interval\":\"900000000000\",\"max\":1,\"min\":0.3},\"laser-freq-offset\":\"801\"}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-L1"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"fec-corrected-bits\":\"197321744\",\"fec-corrected-bytes\":\"197321744\",\"fec-uncorrectable-blocks\":\"0\",\"input-power\":{\"instant\":-14.3,\"interval\":\"900000000000\",\"max\":-14.3,\"min\":-14.3},\"laser-bias-current\":{\"instant\":188.7,\"interval\":\"900000000000\",\"max\":188.9,\"min\":188.6},\"output-power\":{\"instant\":0.5,\"interval\":\"900000000000\",\"max\":0.5,\"min\":0.5},\"post-fec-ber\":{\"avg\":0,\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"pre-fec-ber\":{\"avg\":0.000193,\"instant\":0.000183,\"interval\":\"900000000000\",\"max\":0.000207,\"min\":0.000177}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-L2"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"fec-corrected-bits\":\"393445513\",\"fec-corrected-bytes\":\"393445513\",\"fec-uncorrectable-blocks\":\"0\",\"input-power\":{\"instant\":-14.5,\"interval\":\"900000000000\",\"max\":-14.5,\"min\":-14.6},\"laser-bias-current\":{\"instant\":226.3,\"interval\":\"900000000000\",\"max\":226.4,\"min\":226.1},\"output-power\":{\"instant\":0.5,\"interval\":\"900000000000\",\"max\":0.5,\"min\":0.5},\"post-fec-ber\":{\"avg\":0,\"instant\":0,\"interval\":\"900000000000\",\"max\":0,\"min\":0},\"pre-fec-ber\":{\"avg\":0.000385,\"instant\":0.000384,\"interval\":\"900000000000\",\"max\":0.000401,\"min\":0.000366}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C1"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"fec-corrected-bytes\":\"0\",\"fec-uncorrectable-blocks\":\"0\",\"input-power\":{\"instant\":5.7,\"interval\":\"900000000000\",\"max\":5.7,\"min\":5.6},\"output-power\":{\"instant\":6.3,\"interval\":\"900000000000\",\"max\":6.4,\"min\":6.3},\"post-fec-ber\":{\"instant\":0,\"interval\":\"900000000000\"},\"pre-fec-ber\":{\"instant\":0,\"interval\":\"900000000000\"}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C2"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"post-fec-ber\":{\"instant\":1,\"interval\":\"900000000000\"}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C3"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"post-fec-ber\":{\"instant\":1,\"interval\":\"900000000000\"}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C4"
+        >
+      >
+      elem: <
+        name: "openconfig-platform-transceiver:transceiver"
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"input-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"output-power\":{\"instant\":-60,\"interval\":\"900000000000\",\"max\":-60,\"min\":-60},\"post-fec-ber\":{\"instant\":1,\"interval\":\"900000000000\"}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-L1"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"temperature\":{\"instant\":50,\"interval\":\"900000000000\",\"max\":50,\"min\":50}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-L2"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"temperature\":{\"instant\":50,\"interval\":\"900000000000\",\"max\":50,\"min\":50}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "LINECARD-1-1"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"temperature\":{\"instant\":60.2,\"interval\":\"900000000000\",\"max\":60.3,\"min\":60.1}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C1"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"temperature\":{\"instant\":40.7,\"interval\":\"900000000000\",\"max\":42,\"min\":40}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C2"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"temperature\":{\"instant\":38.7,\"interval\":\"900000000000\",\"max\":40,\"min\":38}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C3"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"temperature\":{\"instant\":37,\"interval\":\"900000000000\",\"max\":37.8,\"min\":36}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "TRANSCEIVER-1-1-C4"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"temperature\":{\"instant\":35.6,\"interval\":\"900000000000\",\"max\":35.8,\"min\":35.2}}"
+    >
+  >
+>
+extension: <
+  registered_ext: <
+    id: 103
+    msg: "10.99.99.32"
+  >
+>

@@ -1,0 +1,44 @@
+update: <
+  timestamp: 1720382348000000000
+  prefix: <
+    elem: <
+      name: "openconfig-platform:components"
+    >
+    elem: <
+      name: "component"
+      key: <
+        key: "name"
+        value: "MCU-1-41"
+      >
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "cpu"
+      >
+      elem: <
+        name: "openconfig-platform-cpu:utilization"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"state\":{\"instant\":16,\"interval\":\"900000000000\",\"max\":17,\"min\":16}}"
+    >
+  >
+  update: <
+    path: <
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"memory\":{\"utilized\":\"908222464\"},\"temperature\":{\"instant\":34.7,\"interval\":\"900000000000\",\"max\":34.8,\"min\":34.3}}"
+    >
+  >
+>
+extension: <
+  registered_ext: <
+    id: 103
+    msg: "10.99.99.32"
+  >
+>

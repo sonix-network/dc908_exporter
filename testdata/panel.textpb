@@ -1,0 +1,29 @@
+update: <
+  timestamp: 1720382347000000000
+  update: <
+    path: <
+      elem: <
+        name: "openconfig-platform:components"
+      >
+      elem: <
+        name: "component"
+        key: <
+          key: "name"
+          value: "PANEL-1-40"
+        >
+      >
+      elem: <
+        name: "state"
+      >
+    >
+    val: <
+      json_ietf_val: "{\"temperature\":{\"instant\":25.6,\"interval\":\"900000000000\",\"max\":26,\"min\":25.5}}"
+    >
+  >
+>
+extension: <
+  registered_ext: <
+    id: 103
+    msg: "10.99.99.32"
+  >
+>
