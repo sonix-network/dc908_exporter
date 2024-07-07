@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "gnmi.proto";
+
+package gnmi.dc908;
+
+option go_package = "github.com/sonix-network/dc908_exporter/proto";
+
+// Huawei DC908 misspells the gNMI endpoint "gNMIDialOut" as "gNMIDialout"
+// so we have to replicate that here.
+service gNMIDialout {
+  rpc Publish(stream SubscribeResponse) returns (stream PublishResponse);
+}
+
+message PublishResponse {
+  int64 timestamp = 1;
+  Path prefix = 2;
+  string alias = 3;
+  repeated Path path = 4;
+}
