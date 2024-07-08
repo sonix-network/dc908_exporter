@@ -23,6 +23,7 @@ var (
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/fan/state`), handleFan},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/state`), handleTemperature},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/state`), handleMemory},
+		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/cpu/openconfig-platform-cpu:utilization`), handleCPUUtilization},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/power-supply/state`), handlePowerSupply},
 	}
 )
@@ -33,6 +34,7 @@ type metricRegistry struct {
 	fanRPM                   *prometheus.GaugeVec
 	temperature              *prometheus.GaugeVec
 	memoryUtilized           *prometheus.GaugeVec
+	cpuUtilization           *prometheus.GaugeVec
 	powerSupplyInputCurrent  *prometheus.GaugeVec
 	powerSupplyInputVoltage  *prometheus.GaugeVec
 	powerSupplyOutputCurrent *prometheus.GaugeVec
@@ -55,6 +57,11 @@ func NewMetricRegistry() *metricRegistry {
 		memoryUtilized: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Name: "dc908_memory_utilized_bytes",
 			Help: "The number of bytes of memory currently in use by processes running on the component, not considering reserved memory that is not available for use.",
+		},
+			[]string{"device"}),
+		cpuUtilization: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dc908_cpu_utilization_ratio",
+			Help: "Ratio (0.0 - 1.0) of CPU utilization.",
 		},
 			[]string{"device"}),
 		powerSupplyInputCurrent: prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -81,6 +88,7 @@ func NewMetricRegistry() *metricRegistry {
 	m.r.MustRegister(m.fanRPM)
 	m.r.MustRegister(m.temperature)
 	m.r.MustRegister(m.memoryUtilized)
+	m.r.MustRegister(m.cpuUtilization)
 	m.r.MustRegister(m.powerSupplyInputCurrent)
 	m.r.MustRegister(m.powerSupplyInputVoltage)
 	m.r.MustRegister(m.powerSupplyOutputCurrent)
@@ -155,6 +163,22 @@ func handleMemory(m *metricRegistry, j string, groups []string) error {
 		return err
 	}
 	m.memoryUtilized.With(prometheus.Labels{"device": name}).Set(float64(memUtil))
+	return nil
+}
+
+func handleCPUUtilization(m *metricRegistry, j string, groups []string) error {
+	name := groups[0]
+	val := struct {
+		State struct {
+			Instant float64
+		}
+	}{}
+
+	if err := json.Unmarshal([]byte(j), &val); err != nil {
+		return fmt.Errorf("failed to parse cpu utilization metric: %v", err)
+	}
+	log.V(2).Infof("New CPU utilization metric for %q: %+v", name, val)
+	m.cpuUtilization.With(prometheus.Labels{"device": name}).Set(float64(val.State.Instant) / 100.0)
 	return nil
 }
 

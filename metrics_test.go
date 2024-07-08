@@ -42,6 +42,9 @@ dc908_temperature_celsius{device="PSU-1-22"} 30
 # HELP dc908_temperature_celsius Current temperature of components.
 # TYPE dc908_temperature_celsius gauge
 dc908_temperature_celsius{device="MCU-1-41"} 34.7
+# HELP dc908_cpu_utilization_ratio Ratio (0.0 - 1.0) of CPU utilization.
+# TYPE dc908_cpu_utilization_ratio gauge
+dc908_cpu_utilization_ratio{device="MCU-1-41"} 0.16
 # HELP dc908_memory_utilized_bytes The number of bytes of memory currently in use by processes running on the component, not considering reserved memory that is not available for use.
 # TYPE dc908_memory_utilized_bytes gauge
 dc908_memory_utilized_bytes{device="MCU-1-41"} 9.08222464e+08
