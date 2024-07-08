@@ -25,6 +25,9 @@ var (
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/state`), handleMemory},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/cpu/openconfig-platform-cpu:utilization`), handleCPUUtilization},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/power-supply/state`), handlePowerSupply},
+		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-platform-transceiver:transceiver/physical-channels/channel\[index=([^,\]]+)\]/state`), handleGeneralLaser},
+		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-platform-transceiver:transceiver/state`), handleGeneralLaser},
+		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-platform-transceiver:transceiver/physical-channels/channel\[index=([^,\]]+)\]/state`), handleGeneralLaser},
 	}
 )
 
@@ -39,6 +42,9 @@ type metricRegistry struct {
 	powerSupplyInputVoltage  *prometheus.GaugeVec
 	powerSupplyOutputCurrent *prometheus.GaugeVec
 	powerSupplyOutputVoltage *prometheus.GaugeVec
+	laserInputPower          *prometheus.GaugeVec
+	laserBiasCurrent         *prometheus.GaugeVec
+	laserOutputPower         *prometheus.GaugeVec
 }
 
 func NewMetricRegistry() *metricRegistry {
@@ -84,6 +90,22 @@ func NewMetricRegistry() *metricRegistry {
 			Help: "Current output voltage on a power supply.",
 		},
 			[]string{"device"}),
+
+		laserInputPower: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dc908_laser_input_power_dbm",
+			Help: "The input optical power of a physical channel in dBm.",
+		},
+			[]string{"device", "index"}),
+		laserBiasCurrent: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dc908_laser_bias_current_amepere",
+			Help: "The current applied by the system to the transmit laser to achieve the output power.",
+		},
+			[]string{"device", "index"}),
+		laserOutputPower: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dc908_laser_output_power_dbm",
+			Help: "The output optical power of a physical channel in dBm.",
+		},
+			[]string{"device", "index"}),
 	}
 	m.r.MustRegister(m.fanRPM)
 	m.r.MustRegister(m.temperature)
@@ -93,6 +115,9 @@ func NewMetricRegistry() *metricRegistry {
 	m.r.MustRegister(m.powerSupplyInputVoltage)
 	m.r.MustRegister(m.powerSupplyOutputCurrent)
 	m.r.MustRegister(m.powerSupplyOutputVoltage)
+	m.r.MustRegister(m.laserInputPower)
+	m.r.MustRegister(m.laserBiasCurrent)
+	m.r.MustRegister(m.laserOutputPower)
 	return m
 }
 
@@ -222,5 +247,34 @@ func handlePowerSupply(m *metricRegistry, j string, groups []string) error {
 	m.powerSupplyInputVoltage.With(prometheus.Labels{"device": name}).Set(val.InputVoltage)
 	m.powerSupplyOutputCurrent.With(prometheus.Labels{"device": name}).Set(val.OutputCurrent)
 	m.powerSupplyOutputVoltage.With(prometheus.Labels{"device": name}).Set(val.OutputVoltage)
+	return nil
+}
+
+func handleGeneralLaser(m *metricRegistry, j string, groups []string) error {
+	name := groups[0]
+	labels := prometheus.Labels{"device": name, "index": ""}
+	if len(groups) > 1 {
+		index := groups[1]
+		labels = prometheus.Labels{"device": name, "index": index}
+	}
+	val := struct {
+		InputPower struct {
+			Instant float64
+		} `json:"input-power"`
+		LaserBiasCurrent struct {
+			Instant float64
+		} `json:"laser-bias-current"`
+		OutputPower struct {
+			Instant float64
+		} `json:"output-power"`
+	}{}
+
+	if err := json.Unmarshal([]byte(j), &val); err != nil {
+		return fmt.Errorf("failed to parse cpu utilization metric: %v", err)
+	}
+	log.V(2).Infof("New general laser metric for %v, %+v", labels, val)
+	m.laserInputPower.With(labels).Set(float64(val.InputPower.Instant))
+	m.laserBiasCurrent.With(labels).Set(float64(val.LaserBiasCurrent.Instant))
+	m.laserOutputPower.With(labels).Set(float64(val.OutputPower.Instant))
 	return nil
 }

@@ -49,6 +49,89 @@ dc908_cpu_utilization_ratio{device="MCU-1-41"} 0.16
 # TYPE dc908_memory_utilized_bytes gauge
 dc908_memory_utilized_bytes{device="MCU-1-41"} 9.08222464e+08
 `},
+		{"testdata/optics.textpb", `
+# HELP dc908_laser_bias_current_amepere The current applied by the system to the transmit laser to achieve the output power.
+# TYPE dc908_laser_bias_current_amepere gauge
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index=""} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="1"} 55.5
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="2"} 55
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="3"} 55
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="4"} 55.5
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index=""} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="1"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="2"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="3"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="4"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index=""} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="1"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="2"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="3"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="4"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index=""} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="1"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="2"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="3"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="4"} 0
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-L1",index=""} 188.7
+dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-L2",index=""} 226.3
+# HELP dc908_laser_input_power_dbm The input optical power of a physical channel in dBm.
+# TYPE dc908_laser_input_power_dbm gauge
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index=""} 5.7
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="1"} -0.5
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="2"} -0.1
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="3"} -0.3
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="4"} -0.6
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index=""} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index="1"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index="2"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index="3"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index="4"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index=""} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index="1"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index="2"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index="3"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index="4"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index=""} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index="1"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index="2"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index="3"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index="4"} -60
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-L1",index=""} -14.3
+dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-L2",index=""} -14.5
+# HELP dc908_laser_output_power_dbm The output optical power of a physical channel in dBm.
+# TYPE dc908_laser_output_power_dbm gauge
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index=""} 6.3
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="1"} 0
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="2"} 0
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="3"} 0.4
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="4"} 0.5
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index=""} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index="1"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index="2"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index="3"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index="4"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C3",index=""} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C3",index="1"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C3",index="2"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C3",index="3"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C3",index="4"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C4",index=""} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C4",index="1"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C4",index="2"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C4",index="3"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C4",index="4"} -60
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-L1",index=""} 0.5
+dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-L2",index=""} 0.5
+# HELP dc908_temperature_celsius Current temperature of components.
+# TYPE dc908_temperature_celsius gauge
+dc908_temperature_celsius{device="LINECARD-1-1"} 60.2
+dc908_temperature_celsius{device="TRANSCEIVER-1-1-C1"} 40.7
+dc908_temperature_celsius{device="TRANSCEIVER-1-1-C2"} 38.7
+dc908_temperature_celsius{device="TRANSCEIVER-1-1-C3"} 37
+dc908_temperature_celsius{device="TRANSCEIVER-1-1-C4"} 35.6
+dc908_temperature_celsius{device="TRANSCEIVER-1-1-L1"} 50
+dc908_temperature_celsius{device="TRANSCEIVER-1-1-L2"} 50
+`},
 	}
 
 	for _, tt := range tests {
