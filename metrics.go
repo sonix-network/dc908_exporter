@@ -304,7 +304,7 @@ func handleGeneralLaser(m *metricRegistry, j string, groups []string) error {
 	}
 	log.V(2).Infof("New general laser metric for %v, %+v", labels, val)
 	m.laserInputPower.With(labels).Set(val.InputPower.Instant)
-	m.laserBiasCurrent.With(labels).Set(val.LaserBiasCurrent.Instant)
+	m.laserBiasCurrent.With(labels).Set(val.LaserBiasCurrent.Instant / 1000.0)
 	m.laserOutputPower.With(labels).Set(val.OutputPower.Instant)
 	return nil
 }
@@ -337,6 +337,6 @@ func handleTerminalLaser(m *metricRegistry, j string, groups []string) error {
 	m.laserChromaticDispersion.With(labels).Set(val.ChromaticDispersion.Instant)
 	m.laserPolarizationDependetLoss.With(labels).Set(val.PolarizationDependentLoss.Instant)
 	m.laserPolarizationModeDispersion.With(labels).Set(val.PolarizationModeDispersion.Instant)
-	m.laserFrequencyOffset.With(labels).Set(float64(freqOff))
+	m.laserFrequencyOffset.With(labels).Set(float64(freqOff) * 1000 * 1000)
 	return nil
 }
