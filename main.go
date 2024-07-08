@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"time"
 
-	pb "github.com/sonix-network/dc908_exporter/proto"
 	log "github.com/golang/glog"
+	pb "github.com/sonix-network/dc908_exporter/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/peer"
@@ -19,9 +20,9 @@ var (
 )
 
 type Server struct {
-	s         *grpc.Server
-	lis       net.Listener
-	config    *Config
+	s      *grpc.Server
+	lis    net.Listener
+	config *Config
 	pb.UnimplementedGNMIDialoutServer
 }
 
@@ -38,8 +39,8 @@ func NewServer(config *Config, opts []grpc.ServerOption) (*Server, error) {
 	reflection.Register(s)
 
 	srv := &Server{
-		s:       s,
-		config:  config,
+		s:      s,
+		config: config,
 	}
 	var err error
 	if srv.config.Port < 0 {
@@ -97,7 +98,7 @@ func (srv *Server) Publish(stream pb.GNMIDialout_PublishServer) error {
 }
 
 type Client struct {
-	addr    net.Addr
+	addr net.Addr
 }
 
 func NewClient(addr net.Addr) *Client {
@@ -118,7 +119,6 @@ func (c *Client) Run(srv *Server, stream pb.GNMIDialout_PublishServer) (err erro
 	}
 
 	for {
-		log.V(1).Infof("Client %s reading", c)
 		subscribeResponse, err := stream.Recv()
 		if err != nil {
 			if err == io.EOF {
@@ -128,47 +128,10 @@ func (c *Client) Run(srv *Server, stream pb.GNMIDialout_PublishServer) (err erro
 		}
 
 		notif := subscribeResponse.GetUpdate()
-		// TODO: parse upd.Timestamp
-		prefix := ""
-		if notif.Prefix != nil {
-			for _, elem := range notif.Prefix.Elem {
-				prefix = prefix + "/" + elem.Name
-				if elem.Key != nil{
-					prefix = prefix + "["
-					first := true
-					for k, v := range elem.Key {
-						if !first {
-							prefix = prefix + ","
-						}
-						first = false
-						prefix = prefix + k + "=" + v
-					}
-					prefix = prefix + "]"
-				}
-			}
-		}
-		for _, upd := range notif.Update {
-			fqn := prefix
-			for _, elem := range upd.Path.Elem {
-				fqn = fqn + "/" + elem.Name
-				if elem.Key != nil{
-					fqn = fqn + "["
-					first := true
-					for k, v := range elem.Key {
-						if !first {
-							fqn = fqn + ","
-						}
-						first = false
-						fqn = fqn + k + "=" + v
-					}
-					fqn = fqn + "]"
-				}
-			}
-			val := upd.Val.GetJsonIetfVal()
-			log.Infof("%s: %s: %s", c.String(), fqn, val)
-		}
+		WalkNotification(notif, func(fqn string, _ *time.Time, json string) {
+			log.Infof("%s: %s: %s", c.String(), fqn, json)
+		}, nil)
 	}
-	return grpc.Errorf(codes.InvalidArgument, "Exiting")
 }
 
 func (c *Client) Close() {
@@ -189,5 +152,3 @@ func main() {
 	s.Serve()
 	log.Flush()
 }
-
-
