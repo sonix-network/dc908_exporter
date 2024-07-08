@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"regexp"
+	"strconv"
 
 	log "github.com/golang/glog"
 	"github.com/prometheus/client_golang/prometheus"
@@ -21,6 +22,7 @@ var (
 	}{
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/fan/state`), handleFan},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/state`), handleTemperature},
+		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/state`), handleMemory},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/power-supply/state`), handlePowerSupply},
 	}
 )
@@ -30,6 +32,7 @@ type metricRegistry struct {
 
 	fanRPM                   *prometheus.GaugeVec
 	temperature              *prometheus.GaugeVec
+	memoryUtilized           *prometheus.GaugeVec
 	powerSupplyInputCurrent  *prometheus.GaugeVec
 	powerSupplyInputVoltage  *prometheus.GaugeVec
 	powerSupplyOutputCurrent *prometheus.GaugeVec
@@ -47,6 +50,11 @@ func NewMetricRegistry() *metricRegistry {
 		temperature: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Name: "dc908_temperature_celsius",
 			Help: "Current temperature of components.",
+		},
+			[]string{"device"}),
+		memoryUtilized: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dc908_memory_utilized_bytes",
+			Help: "The number of bytes of memory currently in use by processes running on the component, not considering reserved memory that is not available for use.",
 		},
 			[]string{"device"}),
 		powerSupplyInputCurrent: prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -72,6 +80,7 @@ func NewMetricRegistry() *metricRegistry {
 	}
 	m.r.MustRegister(m.fanRPM)
 	m.r.MustRegister(m.temperature)
+	m.r.MustRegister(m.memoryUtilized)
 	m.r.MustRegister(m.powerSupplyInputCurrent)
 	m.r.MustRegister(m.powerSupplyInputVoltage)
 	m.r.MustRegister(m.powerSupplyOutputCurrent)
@@ -123,6 +132,29 @@ func handleTemperature(m *metricRegistry, j string, groups []string) error {
 	}
 	log.V(2).Infof("New temperature metric for %q: %+v", name, val)
 	m.temperature.With(prometheus.Labels{"device": name}).Set(float64(val.Temperature.Instant))
+	return nil
+}
+
+func handleMemory(m *metricRegistry, j string, groups []string) error {
+	name := groups[0]
+	val := struct {
+		Memory struct {
+			Utilized *string
+		}
+	}{}
+
+	if err := json.Unmarshal([]byte(j), &val); err != nil {
+		return fmt.Errorf("failed to parse memory metric: %v", err)
+	}
+	if val.Memory.Utilized == nil {
+		return nil
+	}
+	log.V(2).Infof("New memory metric for %q: %+v", name, val)
+	memUtil, err := strconv.Atoi(*val.Memory.Utilized)
+	if err != nil {
+		return err
+	}
+	m.memoryUtilized.With(prometheus.Labels{"device": name}).Set(float64(memUtil))
 	return nil
 }
 
