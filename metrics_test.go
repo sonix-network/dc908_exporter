@@ -52,6 +52,8 @@ dc908_memory_utilized_bytes{device="MCU-1-41"} 9.08222464e+08
 		{"testdata/optics.textpb", `
 # HELP dc908_laser_bias_current_amepere The current applied by the system to the transmit laser to achieve the output power.
 # TYPE dc908_laser_bias_current_amepere gauge
+dc908_laser_bias_current_amepere{device="OCH-1-1-L1",index=""} 188.7
+dc908_laser_bias_current_amepere{device="OCH-1-1-L2",index=""} 226.3
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index=""} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="1"} 55.5
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="2"} 55
@@ -76,6 +78,8 @@ dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-L1",index=""} 188.7
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-L2",index=""} 226.3
 # HELP dc908_laser_input_power_dbm The input optical power of a physical channel in dBm.
 # TYPE dc908_laser_input_power_dbm gauge
+dc908_laser_input_power_dbm{device="OCH-1-1-L1",index=""} -14.3
+dc908_laser_input_power_dbm{device="OCH-1-1-L2",index=""} -14.5
 dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index=""} 5.7
 dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="1"} -0.5
 dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="2"} -0.1
@@ -100,6 +104,8 @@ dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-L1",index=""} -14.3
 dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-L2",index=""} -14.5
 # HELP dc908_laser_output_power_dbm The output optical power of a physical channel in dBm.
 # TYPE dc908_laser_output_power_dbm gauge
+dc908_laser_output_power_dbm{device="OCH-1-1-L1",index=""} 0.5
+dc908_laser_output_power_dbm{device="OCH-1-1-L2",index=""} 0.5
 dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index=""} 6.3
 dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="1"} 0
 dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="2"} 0

@@ -27,7 +27,7 @@ var (
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/power-supply/state`), handlePowerSupply},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-platform-transceiver:transceiver/physical-channels/channel\[index=([^,\]]+)\]/state`), handleGeneralLaser},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-platform-transceiver:transceiver/state`), handleGeneralLaser},
-		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-platform-transceiver:transceiver/physical-channels/channel\[index=([^,\]]+)\]/state`), handleGeneralLaser},
+		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-terminal-device:optical-channel/state`), handleGeneralLaser},
 	}
 )
 
