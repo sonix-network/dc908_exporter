@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"net/http"
 	"time"
 
 	log "github.com/golang/glog"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	pb "github.com/sonix-network/dc908_exporter/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -23,6 +26,8 @@ type Server struct {
 	s      *grpc.Server
 	lis    net.Listener
 	config *Config
+	mr     *metricRegistry
+
 	pb.UnimplementedGNMIDialoutServer
 }
 
@@ -52,7 +57,13 @@ func NewServer(config *Config, opts []grpc.ServerOption) (*Server, error) {
 	}
 	pb.RegisterGNMIDialoutServer(srv.s, srv)
 	log.V(1).Infof("Created Server on %s", srv.Address())
+
+	srv.mr = NewMetricRegistry()
 	return srv, nil
+}
+
+func (srv *Server) PrometheusRegistry() *prometheus.Registry {
+	return srv.mr.PrometheusRegistry()
 }
 
 func (srv *Server) Serve() error {
@@ -92,18 +103,20 @@ func (srv *Server) Publish(stream pb.GNMIDialout_PublishServer) error {
 		return grpc.Errorf(codes.InvalidArgument, "failed to get peer address")
 	}
 
-	c := NewClient(pr.Addr)
+	c := NewClient(pr.Addr, srv.mr)
 	defer c.Close()
 	return c.Run(srv, stream)
 }
 
 type Client struct {
 	addr net.Addr
+	mr   *metricRegistry
 }
 
-func NewClient(addr net.Addr) *Client {
+func NewClient(addr net.Addr, mr *metricRegistry) *Client {
 	return &Client{
 		addr: addr,
+		mr:   mr,
 	}
 }
 
@@ -129,7 +142,8 @@ func (c *Client) Run(srv *Server, stream pb.GNMIDialout_PublishServer) (err erro
 
 		notif := subscribeResponse.GetUpdate()
 		WalkNotification(notif, func(fqn string, _ *time.Time, json string) {
-			log.Infof("%s: %s: %s", c.String(), fqn, json)
+			// TODO: Verify that the timestamp is not too far off
+			c.mr.Update(fqn, json)
 		}, nil)
 	}
 }
@@ -147,6 +161,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to create gNMI server: %v", err)
 	}
+
+	reg := s.PrometheusRegistry()
+	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
+	go func() {
+		log.Fatal(http.ListenAndServe(":9908", nil))
+	}()
 
 	log.V(1).Infof("Starting RPC server on address: %s", s.Address())
 	s.Serve()
