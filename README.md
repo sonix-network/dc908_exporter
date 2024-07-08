@@ -2,8 +2,10 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/sonix-network/dc908_exporter)](https://goreportcard.com/report/github.com/sonix-network/dc908_exporter)
 
-Simple collector designed to take the gNMI dialout stream from a **single** DC908
+Simple collector designed to take the gNMI dialout stream from a **single** [Huawei OptiXtrans DC908](https://e.huawei.com/en/products/optical-transmission/dc908)
 and export the real-time updates as native Prometheus metrics.
+
+The Huawei OptiXtrans DC908 is a optical-electrical Wavelength Division Multiplexing (WDM) transmission device designed for Data Center Interconnect (DCI).
 
 Caveats as of right now:
 
