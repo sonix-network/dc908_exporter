@@ -28,23 +28,28 @@ var (
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-platform-transceiver:transceiver/physical-channels/channel\[index=([^,\]]+)\]/state`), handleGeneralLaser},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-platform-transceiver:transceiver/state`), handleGeneralLaser},
 		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-terminal-device:optical-channel/state`), handleGeneralLaser},
+		{regexp.MustCompile(`/openconfig-platform:components/component\[name=([^,\]]+)\]/openconfig-terminal-device:optical-channel/state`), handleTerminalLaser},
 	}
 )
 
 type metricRegistry struct {
 	r *prometheus.Registry
 
-	fanRPM                   *prometheus.GaugeVec
-	temperature              *prometheus.GaugeVec
-	memoryUtilized           *prometheus.GaugeVec
-	cpuUtilization           *prometheus.GaugeVec
-	powerSupplyInputCurrent  *prometheus.GaugeVec
-	powerSupplyInputVoltage  *prometheus.GaugeVec
-	powerSupplyOutputCurrent *prometheus.GaugeVec
-	powerSupplyOutputVoltage *prometheus.GaugeVec
-	laserInputPower          *prometheus.GaugeVec
-	laserBiasCurrent         *prometheus.GaugeVec
-	laserOutputPower         *prometheus.GaugeVec
+	fanRPM                          *prometheus.GaugeVec
+	temperature                     *prometheus.GaugeVec
+	memoryUtilized                  *prometheus.GaugeVec
+	cpuUtilization                  *prometheus.GaugeVec
+	powerSupplyInputCurrent         *prometheus.GaugeVec
+	powerSupplyInputVoltage         *prometheus.GaugeVec
+	powerSupplyOutputCurrent        *prometheus.GaugeVec
+	powerSupplyOutputVoltage        *prometheus.GaugeVec
+	laserInputPower                 *prometheus.GaugeVec
+	laserBiasCurrent                *prometheus.GaugeVec
+	laserOutputPower                *prometheus.GaugeVec
+	laserChromaticDispersion        *prometheus.GaugeVec
+	laserPolarizationDependetLoss   *prometheus.GaugeVec
+	laserPolarizationModeDispersion *prometheus.GaugeVec
+	laserFrequencyOffset            *prometheus.GaugeVec
 }
 
 func NewMetricRegistry() *metricRegistry {
@@ -106,6 +111,27 @@ func NewMetricRegistry() *metricRegistry {
 			Help: "The output optical power of a physical channel in dBm.",
 		},
 			[]string{"device", "index"}),
+		laserChromaticDispersion: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dc908_laser_chromatic_dispersion_ps_nm",
+			Help: "Chromatic Dispersion of an optical channel in picoseconds / nanometer (ps/nm).",
+		},
+			[]string{"device"}),
+		laserPolarizationDependetLoss: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dc908_laser_polarization_dependent_loss_db",
+			Help: "Polarization Dependent Loss of an optical channel in dB.",
+		},
+			[]string{"device"}),
+		laserPolarizationModeDispersion: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dc908_laser_polarization_mode_dispersion_ps",
+			Help: "Polarization Mode Dispersion of an optical channel in picoseconds (ps).",
+		},
+			[]string{"device"}),
+		// TODO: If we figure out what this really is, improve the help string.
+		laserFrequencyOffset: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dc908_laser_frequency_offset_hertz",
+			Help: "Frequency offset from reference frequency.",
+		},
+			[]string{"device"}),
 	}
 	m.r.MustRegister(m.fanRPM)
 	m.r.MustRegister(m.temperature)
@@ -118,6 +144,10 @@ func NewMetricRegistry() *metricRegistry {
 	m.r.MustRegister(m.laserInputPower)
 	m.r.MustRegister(m.laserBiasCurrent)
 	m.r.MustRegister(m.laserOutputPower)
+	m.r.MustRegister(m.laserChromaticDispersion)
+	m.r.MustRegister(m.laserPolarizationDependetLoss)
+	m.r.MustRegister(m.laserPolarizationModeDispersion)
+	m.r.MustRegister(m.laserFrequencyOffset)
 	return m
 }
 
@@ -270,11 +300,43 @@ func handleGeneralLaser(m *metricRegistry, j string, groups []string) error {
 	}{}
 
 	if err := json.Unmarshal([]byte(j), &val); err != nil {
-		return fmt.Errorf("failed to parse cpu utilization metric: %v", err)
+		return fmt.Errorf("failed to parse general laser metric: %v", err)
 	}
 	log.V(2).Infof("New general laser metric for %v, %+v", labels, val)
-	m.laserInputPower.With(labels).Set(float64(val.InputPower.Instant))
-	m.laserBiasCurrent.With(labels).Set(float64(val.LaserBiasCurrent.Instant))
-	m.laserOutputPower.With(labels).Set(float64(val.OutputPower.Instant))
+	m.laserInputPower.With(labels).Set(val.InputPower.Instant)
+	m.laserBiasCurrent.With(labels).Set(val.LaserBiasCurrent.Instant)
+	m.laserOutputPower.With(labels).Set(val.OutputPower.Instant)
+	return nil
+}
+
+func handleTerminalLaser(m *metricRegistry, j string, groups []string) error {
+	name := groups[0]
+	labels := prometheus.Labels{"device": name}
+	val := struct {
+		ChromaticDispersion struct {
+			Instant float64
+		} `json:"chromatic-dispersion"`
+		PolarizationDependentLoss struct {
+			Instant float64
+		} `json:"polarization-dependent-loss"`
+		PolarizationModeDispersion struct {
+			Instant float64
+		} `json:"polarization-mode-dispersion"`
+		LaserFrequencyOffset string `json:"laser-freq-offset"`
+	}{}
+
+	if err := json.Unmarshal([]byte(j), &val); err != nil {
+		return fmt.Errorf("failed to parse terminal laser metric: %v", err)
+	}
+	log.V(2).Infof("New terminal laser metric for %v, %+v", labels, val)
+
+	freqOff, err := strconv.Atoi(val.LaserFrequencyOffset)
+	if err != nil {
+		return err
+	}
+	m.laserChromaticDispersion.With(labels).Set(val.ChromaticDispersion.Instant)
+	m.laserPolarizationDependetLoss.With(labels).Set(val.PolarizationDependentLoss.Instant)
+	m.laserPolarizationModeDispersion.With(labels).Set(val.PolarizationModeDispersion.Instant)
+	m.laserFrequencyOffset.With(labels).Set(float64(freqOff))
 	return nil
 }

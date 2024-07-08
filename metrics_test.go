@@ -76,6 +76,14 @@ dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="3"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="4"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-L1",index=""} 188.7
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-L2",index=""} 226.3
+# HELP dc908_laser_chromatic_dispersion_ps_nm Chromatic Dispersion of an optical channel in picoseconds / nanometer (ps/nm).
+# TYPE dc908_laser_chromatic_dispersion_ps_nm gauge
+dc908_laser_chromatic_dispersion_ps_nm{device="OCH-1-1-L1"} 3
+dc908_laser_chromatic_dispersion_ps_nm{device="OCH-1-1-L2"} -2
+# HELP dc908_laser_frequency_offset_hertz Frequency offset from reference frequency.
+# TYPE dc908_laser_frequency_offset_hertz gauge
+dc908_laser_frequency_offset_hertz{device="OCH-1-1-L1"} 880
+dc908_laser_frequency_offset_hertz{device="OCH-1-1-L2"} 801
 # HELP dc908_laser_input_power_dbm The input optical power of a physical channel in dBm.
 # TYPE dc908_laser_input_power_dbm gauge
 dc908_laser_input_power_dbm{device="OCH-1-1-L1",index=""} -14.3
@@ -128,6 +136,14 @@ dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C4",index="3"} -60
 dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C4",index="4"} -60
 dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-L1",index=""} 0.5
 dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-L2",index=""} 0.5
+# HELP dc908_laser_polarization_dependent_loss_db Polarization Dependent Loss of an optical channel in dB.
+# TYPE dc908_laser_polarization_dependent_loss_db gauge
+dc908_laser_polarization_dependent_loss_db{device="OCH-1-1-L1"} 1.9
+dc908_laser_polarization_dependent_loss_db{device="OCH-1-1-L2"} 1.8
+# HELP dc908_laser_polarization_mode_dispersion_ps Polarization Mode Dispersion of an optical channel in picoseconds (ps).
+# TYPE dc908_laser_polarization_mode_dispersion_ps gauge
+dc908_laser_polarization_mode_dispersion_ps{device="OCH-1-1-L1"} 1.6
+dc908_laser_polarization_mode_dispersion_ps{device="OCH-1-1-L2"} 0.6
 # HELP dc908_temperature_celsius Current temperature of components.
 # TYPE dc908_temperature_celsius gauge
 dc908_temperature_celsius{device="LINECARD-1-1"} 60.2
