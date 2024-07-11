@@ -13,13 +13,16 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	pb "github.com/sonix-network/dc908_exporter/proto"
 	"google.golang.org/grpc"
+	"golang.org/x/net/netutil"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/peer"
 	"google.golang.org/grpc/reflection"
 )
 
 var (
-	port = flag.Int("port", 8888, "port to listen on")
+	gnmiPort = flag.Int("gnmi-port", 8888, "port to listen for gNMI connections on")
+	metricPort = flag.Int("metric-port", 9908, "port to listen for Prometheus scrapes on")
+	maxConns = flag.Int("max-gnmi-connections", 100, "maximum number of concurrent gNMI connecitons")
 )
 
 type Server struct {
@@ -55,8 +58,9 @@ func NewServer(config *Config, opts []grpc.ServerOption) (*Server, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open listener port %d: %v", srv.config.Port, err)
 	}
+	srv.lis = netutil.LimitListener(srv.lis, *maxConns)
 	pb.RegisterGNMIDialoutServer(srv.s, srv)
-	log.V(1).Infof("Created Server on %s", srv.Address())
+	log.V(1).Infof("Created server on %s with maximum gNMI connections set to %d", srv.Address(), *maxConns)
 
 	srv.mr = NewMetricRegistry()
 	return srv, nil
@@ -156,7 +160,7 @@ func main() {
 
 	opts := []grpc.ServerOption{}
 	cfg := &Config{}
-	cfg.Port = int64(*port)
+	cfg.Port = int64(*gnmiPort)
 	s, err := NewServer(cfg, opts)
 	if err != nil {
 		log.Fatalf("Failed to create gNMI server: %v", err)
@@ -165,7 +169,7 @@ func main() {
 	reg := s.PrometheusRegistry()
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
 	go func() {
-		log.Fatal(http.ListenAndServe(":9908", nil))
+		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *metricPort), nil))
 	}()
 
 	log.V(1).Infof("Starting RPC server on address: %s", s.Address())

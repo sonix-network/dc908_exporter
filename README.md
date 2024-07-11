@@ -8,6 +8,11 @@ and export the real-time updates as native Prometheus metrics.
 
 The Huawei OptiXtrans DC908 is a optical-electrical Wavelength Division Multiplexing (WDM) transmission device designed for Data Center Interconnect (DCI).
 
+The exporter operates two ports by default, both can be changed via command line flags:
+
+ - `8888` - used to receive gNMI telemetry dialout connections.
+ - `9908` - used to present metric data to a Prometheus or OpenMetrics compatible scraper.
+
 ## DC908 configuration
 
 It is important to enable the statistics task for at least `15m` or the DC908
