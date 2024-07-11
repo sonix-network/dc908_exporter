@@ -2,19 +2,18 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/sonix-network/dc908_exporter)](https://goreportcard.com/report/github.com/sonix-network/dc908_exporter)
 
-Simple collector designed to take the gNMI dialout stream from a **single** [Huawei OptiXtrans DC908](https://e.huawei.com/en/products/optical-transmission/dc908)
+Simple collector designed to take the gNMI dialout stream from one or more
+[Huawei OptiXtrans DC908](https://e.huawei.com/en/products/optical-transmission/dc908)
 and export the real-time updates as native Prometheus metrics.
 
 The Huawei OptiXtrans DC908 is a optical-electrical Wavelength Division Multiplexing (WDM) transmission device designed for Data Center Interconnect (DCI).
 
-Caveats as of right now:
+## DC908 configuration
 
- - Only a single dialout device is supported per exporter
- - Metrics do not become stale, in the absence of gNMI updates the last value is exported indefinitely
+It is important to enable the statistics task for at least `15m` or the DC908
+will not report any metrics except for RMON data.
 
-## Usage
-
-Configuration on the DC908:
+Here is an example configuration on the DC908:
 
 ```
 # Enable metrics collection
@@ -47,7 +46,49 @@ protocol grpc encoding json_ietf
 return
 ```
 
-Prometheus configuration like any other standard exporter.
+Replace the `1.2.3.4` with the IPv4 of the instance of `dc908_exporter`. Leave
+port `8888` unless you changed it in the exporter.
+
+## Prometheus configuration
+
+The DC908 is a "blackbox"-style exporter where it allows multiple incoming gNMI
+streams to be handled by a single exporter. Thus, there is some special needs
+in the Prometheus configuration in order to be able to separate the gNMI streams
+into specific transponder instances.
+
+Example configuration assuming you have two DC908 transponders at `10.1.1.1` and
+`10.2.2.2` called `my-xpd-1` and `my-xpd-2` respectively.
+
+**NOTE:** If you run the exporter on a machine other than the Prometheus server,
+change the `127.0.0.1:9908` accordingly.
+
+```yaml
+scrape_configs:
+  - job_name: "dc908"
+    metrics_path: '/probe'
+
+    static_configs:
+    - targets:
+      - 10.1.1.1
+      labels:
+        exporter: 127.0.0.1:9908
+        __name: my-xpd-1
+    - targets:
+      - 10.2.2.2
+      labels:
+        exporter: 127.0.0.1:9908
+        __name: my-xpd-2
+
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [exporter]
+        target_label: __address__
+      - source_labels: [__name]
+        target_label: instance
+      - action: labeldrop
+        regex: __name
+```
 
 ## Example metrics
 
