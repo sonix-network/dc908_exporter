@@ -29,7 +29,6 @@ type Server struct {
 	s      *grpc.Server
 	lis    net.Listener
 	config *Config
-	mr     *metricRegistry
 
 	pb.UnimplementedGNMIDialoutServer
 }
@@ -62,7 +61,6 @@ func NewServer(config *Config, opts []grpc.ServerOption) (*Server, error) {
 	pb.RegisterGNMIDialoutServer(srv.s, srv)
 	log.V(1).Infof("Created server on %s with maximum gNMI connections set to %d", srv.Address(), *maxConns)
 
-	srv.mr = NewMetricRegistry()
 	return srv, nil
 }
 
@@ -107,8 +105,18 @@ func (srv *Server) Publish(stream pb.GNMIDialout_PublishServer) error {
 		return grpc.Errorf(codes.InvalidArgument, "failed to get peer address")
 	}
 
-	c := NewClient(pr.Addr, srv.mr)
+	mr := NewMetricRegistry()
+	ip := // TODO: grab from pr.Addr somehow
+	// TODO: Lock!
+	// TODO: check if already exists, error out if it does
+	gnmiMetricMap[ip] = mr
+
+	c := NewClient(pr.Addr, mr)
 	defer c.Close()
+	defer func() {
+		// TODO: Lock!
+		delete(gnmiMetricMap[ip])
+	}()
 	return c.Run(srv, stream)
 }
 
@@ -155,6 +163,38 @@ func (c *Client) Run(srv *Server, stream pb.GNMIDialout_PublishServer) (err erro
 func (c *Client) Close() {
 }
 
+func probeHandler(w http.ResponseWriter, r *http.Request) {
+	params := r.URL.Query()
+	paramMap := make(map[string]string)
+	target := params.Get("target")
+	paramMap["target"] = params.Get("target")
+	if target == "" {
+		http.Error(w, "Target parameter missing or empty", http.StatusBadRequest)
+		return
+	}
+
+	probeSuccessGauge := prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: "probe_success",
+		Help: "Whether or not the probe succeeded",
+	})
+
+	// TODO: Lock!!
+	mr, ok := gnmiMetricMap[target]
+
+	if ok {
+		probeSuccessGauge.Set(1)
+		log.V(1).Infof("Probe of %q succeeded", target)
+	} else {
+		log.Infof("Probe of %q failed, no gNMI data available at this time", target)
+	}
+
+	// Assuming the Prometheus Registry object is multi-thread safe this should
+	// be fine without locking
+	reg := mr.PrometheusRegistry()
+	h := promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
+	h.ServeHTTP(w, r)
+}
+
 func main() {
 	flag.Parse()
 
@@ -168,6 +208,7 @@ func main() {
 
 	reg := s.PrometheusRegistry()
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
+	http.HandleFunc("/probe", probeHandler)
 	go func() {
 		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *metricPort), nil))
 	}()
