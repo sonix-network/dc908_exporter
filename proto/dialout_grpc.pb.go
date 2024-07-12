@@ -8,6 +8,7 @@ package proto
 
 import (
 	context "context"
+
 	gnmi "github.com/openconfig/gnmi/proto/gnmi"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"

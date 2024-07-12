@@ -6,7 +6,7 @@ GO_VERSION_NUMBER ?= $(word 3, $(GO_VERSION))
 LDFLAGS = -ldflags "-X main.Version=${VERSION} -X main.GitHash=${GIT_HASH} -X main.GoVersion=${GO_VERSION_NUMBER}"
 
 .PHONY: build
-build:
+build: proto/dialout_grpc.pb.go proto/dialout.pb.go
 	CGO_ENABLED=0 go build ${LDFLAGS} -v -o dc908_exporter
 
 .PHONY: build-release
@@ -44,10 +44,23 @@ vet:
 .PHONY: fmt-fix
 fmt-fix:
 	@go mod download golang.org/x/tools
-	@go run golang.org/x/tools/cmd/goimports -w -l .
+	@go run golang.org/x/tools/cmd/goimports@latest -w -l .
 
 .PHONY: fmt-check
 fmt-check:
 	@printf "Check formatting... \n"
 	@go mod download golang.org/x/tools
-	@if [[ $$( go run golang.org/x/tools/cmd/goimports -l . ) ]]; then printf "Files not properly formatted. Run 'make fmt-fix' \n"; exit 1; else printf "Check formatting finished \n"; fi
+	@if [[ $$( go run golang.org/x/tools/cmd/goimports@latest -l . ) ]]; then printf "Files not properly formatted. Run 'make fmt-fix' \n"; exit 1; else printf "Check formatting finished \n"; fi
+
+proto/dialout_grpc.pb.go: proto/dialout.proto proto/gnmi.proto proto/gnmi_ext.proto
+	protoc --go_out=proto/ --go_opt=paths=source_relative \
+	--go-grpc_out=proto/ --go-grpc_opt=paths=source_relative \
+		proto/dialout.proto -I proto
+	@go run golang.org/x/tools/cmd/goimports@latest -w -l proto
+
+proto/dialout.pb.go: proto/dialout.proto proto/gnmi.proto proto/gnmi_ext.proto
+	protoc --go_out=proto/ --go_opt=paths=source_relative \
+	--go-grpc_out=proto/ --go-grpc_opt=paths=source_relative \
+		proto/dialout.proto -I proto
+	@go run golang.org/x/tools/cmd/goimports@latest -w -l proto
+
