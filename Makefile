@@ -50,7 +50,7 @@ fmt-fix:
 fmt-check:
 	@printf "Check formatting... \n"
 	@go mod download golang.org/x/tools
-	@if [[ $$( go run golang.org/x/tools/cmd/goimports@latest -l . ) ]]; then printf "Files not properly formatted. Run 'make fmt-fix' \n"; exit 1; else printf "Check formatting finished \n"; fi
+	@if [ $$( go run golang.org/x/tools/cmd/goimports@latest -l . ) ]; then printf "Files not properly formatted. Run 'make fmt-fix' \n"; exit 1; else printf "Check formatting finished \n"; fi
 
 proto/dialout_grpc.pb.go: proto/dialout.proto proto/gnmi.proto proto/gnmi_ext.proto
 	protoc --go_out=proto/ --go_opt=paths=source_relative \
