@@ -1,3 +1,6 @@
 .*.sw?
 
 dc908_exporter
+
+cover.out
+coverage.html
