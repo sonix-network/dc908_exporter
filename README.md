@@ -85,105 +85,19 @@ scrape_configs:
         __name: my-xpd-2
 
     relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [exporter]
-        target_label: __address__
-      - source_labels: [__name]
-        target_label: instance
-      - action: labeldrop
-        regex: __name
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [exporter]
+      target_label: __address__
+    - source_labels: [__name]
+      target_label: instance
+    - action: labeldrop
+      regex: __name
 ```
 
 ## Example metrics
 
 ```
-# HELP dc908_cpu_utilization_ratio Ratio (0.0 - 1.0) of CPU utilization.
-# TYPE dc908_cpu_utilization_ratio gauge
-dc908_cpu_utilization_ratio{device="MCU-1-41"} 0.17
-# HELP dc908_fan_rpm Current fan speed in RPM.
-# TYPE dc908_fan_rpm gauge
-dc908_fan_rpm{device="FAN-1-31"} 4300
-dc908_fan_rpm{device="FAN-1-32"} 4300
-dc908_fan_rpm{device="FAN-1-33"} 4300
-# HELP dc908_laser_bias_current_amepere The current applied by the system to the transmit laser to achieve the output power.
-# TYPE dc908_laser_bias_current_amepere gauge
-dc908_laser_bias_current_amepere{device="OCH-1-1-L1",index=""} 181.4
-dc908_laser_bias_current_amepere{device="OCH-1-1-L2",index=""} 201.7
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index=""} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="1"} 55
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="2"} 55.5
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="3"} 55.5
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="4"} 55
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index=""} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="1"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="2"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="3"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="4"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index=""} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="1"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="2"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="3"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="4"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index=""} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="1"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="2"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="3"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="4"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-L1",index=""} 181.4
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-L2",index=""} 201.7
-# HELP dc908_laser_chromatic_dispersion_ps_nm Chromatic Dispersion of an optical channel in picoseconds / nanometer (ps/nm).
-# TYPE dc908_laser_chromatic_dispersion_ps_nm gauge
-dc908_laser_chromatic_dispersion_ps_nm{device="OCH-1-1-L1"} 13
-dc908_laser_chromatic_dispersion_ps_nm{device="OCH-1-1-L2"} 2
-# HELP dc908_laser_frequency_offset_hertz Frequency offset from reference frequency.
-# TYPE dc908_laser_frequency_offset_hertz gauge
-dc908_laser_frequency_offset_hertz{device="OCH-1-1-L1"} 946
-dc908_laser_frequency_offset_hertz{device="OCH-1-1-L2"} 856
-# HELP dc908_laser_input_power_dbm The input optical power of a physical channel in dBm.
-# TYPE dc908_laser_input_power_dbm gauge
-dc908_laser_input_power_dbm{device="OCH-1-1-L1",index=""} -13.2
-dc908_laser_input_power_dbm{device="OCH-1-1-L2",index=""} -17.5
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index=""} 5.6
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="1"} -0.1
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="2"} -0.1
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="3"} -0.6
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C1",index="4"} -0.9
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index=""} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index="1"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index="2"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index="3"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C2",index="4"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index=""} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index="1"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index="2"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index="3"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C3",index="4"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index=""} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index="1"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index="2"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index="3"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-C4",index="4"} -60
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-L1",index=""} -13.2
-dc908_laser_input_power_dbm{device="TRANSCEIVER-1-1-L2",index=""} -17.5
-# HELP dc908_laser_output_power_dbm The output optical power of a physical channel in dBm.
-# TYPE dc908_laser_output_power_dbm gauge
-dc908_laser_output_power_dbm{device="OCH-1-1-L1",index=""} 0.5
-dc908_laser_output_power_dbm{device="OCH-1-1-L2",index=""} 0.5
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index=""} 5.4
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="1"} -0.8
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="2"} -0.3
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="3"} -0.8
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C1",index="4"} -0.6
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index=""} -60
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index="1"} -60
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index="2"} -60
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index="3"} -60
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C2",index="4"} -60
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C3",index=""} -60
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C3",index="1"} -60
-dc908_laser_output_power_dbm{device="TRANSCEIVER-1-1-C3",index="2"} -60
-bluecmd@oob-lab-sw1:~$ curl localhost:9908/metrics
 # HELP dc908_cpu_utilization_ratio Ratio (0.0 - 1.0) of CPU utilization.
 # TYPE dc908_cpu_utilization_ratio gauge
 dc908_cpu_utilization_ratio{device="MCU-1-41"} 0.17
