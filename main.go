@@ -6,12 +6,14 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"sync"
 	"time"
 
 	log "github.com/golang/glog"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	pb "github.com/sonix-network/dc908_exporter/proto"
+	"golang.org/x/net/netutil"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/peer"
@@ -19,14 +21,17 @@ import (
 )
 
 var (
-	port = flag.Int("port", 8888, "port to listen on")
+	gnmiPort   = flag.Int("gnmi-port", 8888, "port to listen for gNMI connections on")
+	metricPort = flag.Int("metric-port", 9908, "port to listen for Prometheus scrapes on")
+	maxConns   = flag.Int("max-gnmi-connections", 100, "maximum number of concurrent gNMI connecitons")
 )
 
 type Server struct {
-	s      *grpc.Server
-	lis    net.Listener
-	config *Config
-	mr     *metricRegistry
+	s             *grpc.Server
+	lis           net.Listener
+	config        *Config
+	lock          sync.RWMutex
+	gnmiMetricMap map[string]*metricRegistry
 
 	pb.UnimplementedGNMIDialoutServer
 }
@@ -44,8 +49,9 @@ func NewServer(config *Config, opts []grpc.ServerOption) (*Server, error) {
 	reflection.Register(s)
 
 	srv := &Server{
-		s:      s,
-		config: config,
+		s:             s,
+		config:        config,
+		gnmiMetricMap: make(map[string]*metricRegistry),
 	}
 	var err error
 	if srv.config.Port < 0 {
@@ -55,15 +61,11 @@ func NewServer(config *Config, opts []grpc.ServerOption) (*Server, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open listener port %d: %v", srv.config.Port, err)
 	}
+	srv.lis = netutil.LimitListener(srv.lis, *maxConns)
 	pb.RegisterGNMIDialoutServer(srv.s, srv)
-	log.V(1).Infof("Created Server on %s", srv.Address())
+	log.V(1).Infof("Created server on %s with maximum gNMI connections set to %d", srv.Address(), *maxConns)
 
-	srv.mr = NewMetricRegistry()
 	return srv, nil
-}
-
-func (srv *Server) PrometheusRegistry() *prometheus.Registry {
-	return srv.mr.PrometheusRegistry()
 }
 
 func (srv *Server) Serve() error {
@@ -103,8 +105,26 @@ func (srv *Server) Publish(stream pb.GNMIDialout_PublishServer) error {
 		return grpc.Errorf(codes.InvalidArgument, "failed to get peer address")
 	}
 
-	c := NewClient(pr.Addr, srv.mr)
+	mr := NewMetricRegistry()
+	ip := pr.Addr.(*net.TCPAddr).IP.String()
+	srv.lock.Lock()
+	if _, exists := srv.gnmiMetricMap[ip]; exists {
+		srv.lock.Unlock()
+		log.Errorf("Duplicate gNMI session from sender %q, rejecting", ip)
+		return grpc.Errorf(codes.AlreadyExists, "gNMI session for this client already in progress")
+	}
+	srv.gnmiMetricMap[ip] = mr
+	srv.lock.Unlock()
+	log.Infof("New gNMI session registered for sender %q", ip)
+
+	c := NewClient(pr.Addr, mr)
 	defer c.Close()
+	defer func() {
+		srv.lock.Lock()
+		defer srv.lock.Unlock()
+		delete(srv.gnmiMetricMap, ip)
+		log.Infof("gNMI session terminated for sender %q", ip)
+	}()
 	return c.Run(srv, stream)
 }
 
@@ -151,21 +171,57 @@ func (c *Client) Run(srv *Server, stream pb.GNMIDialout_PublishServer) (err erro
 func (c *Client) Close() {
 }
 
+func (srv *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	params := r.URL.Query()
+	paramMap := make(map[string]string)
+	target := params.Get("target")
+	paramMap["target"] = params.Get("target")
+	if target == "" {
+		http.Error(w, "Target parameter missing or empty", http.StatusBadRequest)
+		return
+	}
+
+	probeSuccessGauge := prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: "probe_success",
+		Help: "Whether or not the probe succeeded",
+	})
+
+	srv.lock.RLock()
+	mr, ok := srv.gnmiMetricMap[target]
+	srv.lock.RUnlock()
+
+	ireg := prometheus.NewPedanticRegistry()
+	ireg.MustRegister(probeSuccessGauge)
+
+	regs := prometheus.Gatherers{ireg}
+	if ok {
+		probeSuccessGauge.Set(1)
+		log.V(1).Infof("Probe of %q succeeded", target)
+		// Assuming the Prometheus Registry object is multi-thread safe this should
+		// be fine without locking
+		regs = append(regs, mr.PrometheusRegistry())
+	} else {
+		log.Infof("Probe of %q failed, no gNMI data available at this time", target)
+	}
+
+	h := promhttp.HandlerFor(regs, promhttp.HandlerOpts{Registry: ireg})
+	h.ServeHTTP(w, r)
+}
+
 func main() {
 	flag.Parse()
 
 	opts := []grpc.ServerOption{}
 	cfg := &Config{}
-	cfg.Port = int64(*port)
+	cfg.Port = int64(*gnmiPort)
 	s, err := NewServer(cfg, opts)
 	if err != nil {
 		log.Fatalf("Failed to create gNMI server: %v", err)
 	}
 
-	reg := s.PrometheusRegistry()
-	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
+	http.Handle("/probe", s)
 	go func() {
-		log.Fatal(http.ListenAndServe(":9908", nil))
+		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *metricPort), nil))
 	}()
 
 	log.V(1).Infof("Starting RPC server on address: %s", s.Address())
