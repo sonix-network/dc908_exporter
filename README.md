@@ -15,6 +15,8 @@ The exporter operates two ports by default, both can be changed via command line
 
 ![Grafana dashboard example](grafana.png)
 
+You can get started with [our example Grafana dashboard](https://grafana.com/grafana/dashboards/21508-dc908-system-metrics/).
+
 ## DC908 configuration
 
 It is important to enable the statistics task for at least `15m` or the DC908
