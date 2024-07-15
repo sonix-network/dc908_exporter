@@ -3,7 +3,7 @@ module github.com/sonix-network/dc908_exporter
 go 1.22.4
 
 require (
-	github.com/golang/glog v1.2.1
+	github.com/golang/glog v1.2.2
 	github.com/openconfig/gnmi v0.11.0
 	github.com/prometheus/client_golang v1.19.1
 	github.com/stretchr/testify v1.9.0
