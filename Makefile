@@ -33,7 +33,7 @@ test: fmt-check vet test-unittests generate-html-coverage print-coverage
 	@printf "Sucessfully run tests \n"
 
 .PHONY: get-dependencies
-get-dependencies:
+get-dependencies: proto/dialout_grpc.pb.go  proto/dialout.pb.go
 	go get -v -t -d ./...
 
 .PHONY: vet
