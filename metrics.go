@@ -156,6 +156,7 @@ func (m *metricRegistry) PrometheusRegistry() *prometheus.Registry {
 }
 
 func (m *metricRegistry) Update(name string, json string) error {
+	log.V(3).Infof("New raw metric for %q: %s", name, json)
 	for _, mm := range matchers {
 		match := mm.re.FindStringSubmatch(name)
 		if match == nil {
