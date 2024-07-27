@@ -32,7 +32,7 @@ update: <
       >
     >
     val: <
-      json_ietf_val: "{\"memory\":{\"utilized\":\"908222464\"},\"temperature\":{\"instant\":34.7,\"interval\":\"900000000000\",\"max\":34.8,\"min\":34.3}}"
+      json_ietf_val: "{\"memory\":{\"utilized\":\"908222464\"},\"temperature\":{\"instant\":34.7,\"interval\":\"900000000000\",\"max\":\"34.8\",\"min\":\"34.3\"}}"
     >
   >
 >

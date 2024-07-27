@@ -54,22 +54,18 @@ dc908_memory_utilized_bytes{device="MCU-1-41"} 9.08222464e+08
 # TYPE dc908_laser_bias_current_amepere gauge
 dc908_laser_bias_current_amepere{device="OCH-1-1-L1",index=""} 0.18869999999999998
 dc908_laser_bias_current_amepere{device="OCH-1-1-L2",index=""} 0.2263
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index=""} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="1"} 0.0555
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="2"} 0.055
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="3"} 0.055
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C1",index="4"} 0.0555
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index=""} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="1"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="2"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="3"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C2",index="4"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index=""} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="1"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="2"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="3"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C3",index="4"} 0
-dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index=""} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="1"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="2"} 0
 dc908_laser_bias_current_amepere{device="TRANSCEIVER-1-1-C4",index="3"} 0
@@ -173,7 +169,7 @@ dc908_temperature_celsius{device="TRANSCEIVER-1-1-L2"} 50
 
 			WalkNotification(m.GetUpdate(), func(name string, _ *time.Time, j string) {
 				if err := mr.Update(name, j); err != nil {
-					t.Errorf("metric update: err %v", err)
+					t.Errorf("metric update: err %v for name %q, json:\n%s", err, name, j)
 				}
 			}, nil)
 

@@ -187,7 +187,7 @@ func handleTemperature(m *metricRegistry, j string, groups []string) error {
 	name := groups[0]
 	val := struct {
 		Temperature struct {
-			Instant float64
+			Instant json.Number
 		}
 	}{}
 
@@ -195,7 +195,11 @@ func handleTemperature(m *metricRegistry, j string, groups []string) error {
 		return fmt.Errorf("failed to parse temperature metric: %v", err)
 	}
 	log.V(2).Infof("New temperature metric for %q: %+v", name, val)
-	m.temperature.With(prometheus.Labels{"device": name}).Set(float64(val.Temperature.Instant))
+	t, err := val.Temperature.Instant.Float64()
+	if err != nil {
+		return err
+	}
+	m.temperature.With(prometheus.Labels{"device": name}).Set(t)
 	return nil
 }
 
@@ -226,7 +230,7 @@ func handleCPUUtilization(m *metricRegistry, j string, groups []string) error {
 	name := groups[0]
 	val := struct {
 		State struct {
-			Instant float64
+			Instant json.Number
 		}
 	}{}
 
@@ -234,7 +238,11 @@ func handleCPUUtilization(m *metricRegistry, j string, groups []string) error {
 		return fmt.Errorf("failed to parse cpu utilization metric: %v", err)
 	}
 	log.V(2).Infof("New CPU utilization metric for %q: %+v", name, val)
-	m.cpuUtilization.With(prometheus.Labels{"device": name}).Set(float64(val.State.Instant) / 100.0)
+	cpu, err := val.State.Instant.Float64()
+	if err != nil {
+		return err
+	}
+	m.cpuUtilization.With(prometheus.Labels{"device": name}).Set(cpu / 100.0)
 	return nil
 }
 
@@ -289,14 +297,14 @@ func handleGeneralLaser(m *metricRegistry, j string, groups []string) error {
 		labels = prometheus.Labels{"device": name, "index": index}
 	}
 	val := struct {
-		InputPower struct {
-			Instant float64
+		InputPower *struct {
+			Instant json.Number
 		} `json:"input-power"`
-		LaserBiasCurrent struct {
-			Instant float64
+		LaserBiasCurrent *struct {
+			Instant json.Number
 		} `json:"laser-bias-current"`
-		OutputPower struct {
-			Instant float64
+		OutputPower *struct {
+			Instant json.Number
 		} `json:"output-power"`
 	}{}
 
@@ -304,9 +312,27 @@ func handleGeneralLaser(m *metricRegistry, j string, groups []string) error {
 		return fmt.Errorf("failed to parse general laser metric: %v", err)
 	}
 	log.V(2).Infof("New general laser metric for %v, %+v", labels, val)
-	m.laserInputPower.With(labels).Set(val.InputPower.Instant)
-	m.laserBiasCurrent.With(labels).Set(val.LaserBiasCurrent.Instant / 1000.0)
-	m.laserOutputPower.With(labels).Set(val.OutputPower.Instant)
+	if val.InputPower != nil {
+		v, err := val.InputPower.Instant.Float64()
+		if err != nil {
+			return fmt.Errorf("input-power: %w", err)
+		}
+		m.laserInputPower.With(labels).Set(v)
+	}
+	if val.LaserBiasCurrent != nil {
+		v, err := val.LaserBiasCurrent.Instant.Float64()
+		if err != nil {
+			return fmt.Errorf("laser-bias-current: %w", err)
+		}
+		m.laserBiasCurrent.With(labels).Set(v / 1000.0)
+	}
+	if val.OutputPower != nil {
+		v, err := val.OutputPower.Instant.Float64()
+		if err != nil {
+			return fmt.Errorf("output-power: %w", err)
+		}
+		m.laserOutputPower.With(labels).Set(v)
+	}
 	return nil
 }
 
@@ -315,15 +341,15 @@ func handleTerminalLaser(m *metricRegistry, j string, groups []string) error {
 	labels := prometheus.Labels{"device": name}
 	val := struct {
 		ChromaticDispersion struct {
-			Instant float64
+			Instant json.Number
 		} `json:"chromatic-dispersion"`
 		PolarizationDependentLoss struct {
-			Instant float64
+			Instant json.Number
 		} `json:"polarization-dependent-loss"`
 		PolarizationModeDispersion struct {
-			Instant float64
+			Instant json.Number
 		} `json:"polarization-mode-dispersion"`
-		LaserFrequencyOffset string `json:"laser-freq-offset"`
+		LaserFrequencyOffset json.Number `json:"laser-freq-offset"`
 	}{}
 
 	if err := json.Unmarshal([]byte(j), &val); err != nil {
@@ -331,13 +357,25 @@ func handleTerminalLaser(m *metricRegistry, j string, groups []string) error {
 	}
 	log.V(2).Infof("New terminal laser metric for %v, %+v", labels, val)
 
-	freqOff, err := strconv.Atoi(val.LaserFrequencyOffset)
+	freqOff, err := val.LaserFrequencyOffset.Float64()
 	if err != nil {
-		return err
+		return fmt.Errorf("laser-freq-offset: %w", err)
 	}
-	m.laserChromaticDispersion.With(labels).Set(val.ChromaticDispersion.Instant)
-	m.laserPolarizationDependetLoss.With(labels).Set(val.PolarizationDependentLoss.Instant)
-	m.laserPolarizationModeDispersion.With(labels).Set(val.PolarizationModeDispersion.Instant)
-	m.laserFrequencyOffset.With(labels).Set(float64(freqOff) * 1000 * 1000)
+	cd, err := val.ChromaticDispersion.Instant.Float64()
+	if err != nil {
+		return fmt.Errorf("chromatic-dispersion: %w", err)
+	}
+	pdl, err := val.PolarizationDependentLoss.Instant.Float64()
+	if err != nil {
+		return fmt.Errorf("polarization-dependent-loss: %w", err)
+	}
+	pmd, err := val.PolarizationModeDispersion.Instant.Float64()
+	if err != nil {
+		return fmt.Errorf("polarization-mode-dispersion: %w", err)
+	}
+	m.laserChromaticDispersion.With(labels).Set(cd)
+	m.laserPolarizationDependetLoss.With(labels).Set(pdl)
+	m.laserPolarizationModeDispersion.With(labels).Set(pmd)
+	m.laserFrequencyOffset.With(labels).Set(freqOff * 1000 * 1000)
 	return nil
 }
