@@ -21,7 +21,7 @@ jobs:
       - name: Install protoc
         run: |
           sudo apt-get update
-          sudo apt-get -y install protobuf-compiler protobuf-compiler-grpc
+          sudo apt-get -y install protobuf-compiler protobuf-compiler-grpc protoc-gen-go protoc-gen-go-grpc
 
       - name: Get dependencies
         run: make get-dependencies
