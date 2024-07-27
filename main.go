@@ -163,7 +163,9 @@ func (c *Client) Run(srv *Server, stream pb.GNMIDialout_PublishServer) (err erro
 		notif := subscribeResponse.GetUpdate()
 		WalkNotification(notif, func(fqn string, _ *time.Time, json string) {
 			// TODO: Verify that the timestamp is not too far off
-			c.mr.Update(fqn, json)
+			if err := c.mr.Update(fqn, json); err != nil {
+				log.Warningf("Failed to parse metric update: %v", err)
+			}
 		}, nil)
 	}
 }
