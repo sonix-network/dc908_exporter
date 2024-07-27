@@ -1,5 +1,8 @@
 .*.sw?
 
+proto/dialout.pb.go
+proto/dialout_grpc.pb.go
+
 dc908_exporter
 
 cover.out

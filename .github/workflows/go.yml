@@ -20,6 +20,11 @@ jobs:
           go-version: ^1.22
         id: go
 
+      - name: Install protoc
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install protobuf-compiler protobuf-compiler-grpc
+
       - name: Get dependencies
         run: make get-dependencies
 
