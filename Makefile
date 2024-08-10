@@ -14,6 +14,7 @@ build-release:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64  go build ${LDFLAGS} -o=dc908_exporter.linux.amd64 .  && \
 	CGO_ENABLED=0 GOOS=linux GOARCH=arm64  go build ${LDFLAGS} -o=dc908_exporter.linux.arm64 .  && \
 	CGO_ENABLED=0 GOOS=linux GOARCH=mips64 go build ${LDFLAGS} -o=dc908_exporter.linux.mips64 .
+	tar -zcvf dc908_exporter-$(VERSION).tar.gz --owner 0 --group 0 --no-xattrs dc908_exporter.linux.*
 
 .PHONY: generate-html-coverage
 generate-html-coverage:
