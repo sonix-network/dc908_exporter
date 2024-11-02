@@ -161,7 +161,7 @@ func (c *Client) Run(srv *Server, stream pb.GNMIDialout_PublishServer) (err erro
 			return grpc.Errorf(grpc.Code(err), "received error from client")
 		}
 
-		if (log.V(4)) {
+		if log.V(4) {
 			log.V(4).Infof("Received SubscribeResponse: %s", prototext.Format(subscribeResponse))
 		}
 
