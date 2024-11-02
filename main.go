@@ -18,6 +18,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/peer"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/protobuf/encoding/prototext"
 )
 
 var (
@@ -158,6 +159,10 @@ func (c *Client) Run(srv *Server, stream pb.GNMIDialout_PublishServer) (err erro
 				return grpc.Errorf(codes.Aborted, "stream EOF received")
 			}
 			return grpc.Errorf(grpc.Code(err), "received error from client")
+		}
+
+		if (log.V(4)) {
+			log.V(4).Infof("Received SubscribeResponse: %s", prototext.Format(subscribeResponse))
 		}
 
 		notif := subscribeResponse.GetUpdate()
